@@ -1,0 +1,122 @@
+{% extends 'app/base_template.html' %}
+
+{% block title %}
+    Учебный комитет
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-primary" role="alert">
+                <h2 align="center">Группа номер {{ group.number }}</h2>
+                <h4 align="center">{{ group.speciality.faculty.university.short_name }}, {{ group.speciality.faculty.name }}</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <div class="alert alert-info small-alert" role="alert">
+                <h5 class="small-alert" align="center">Основная информация</h5>
+            </div>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th scope="row">Курс:</th>
+                        <td>{{ group.course_number }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Студентов:</th>
+                        <td>{{ group.students|length }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Специальность:</th>
+                        <td>
+                            <a class="alert-link" href="/speciality/{{ group.speciality.id }}/">{{ group.speciality.name }}</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="alert alert-info small-alert" role="alert">
+                <h5 class="small-alert" align="center">Список группы</h5>
+            </div>
+            {% if group.students  %}
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Фамилия имя отчество</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in group.students %}
+                            <tr>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>
+                                    <a class="alert-link" href="/student/{{ student.id }}/">{{ student.info.full_name }}</a>
+                                </td>
+                            </tr>
+                       {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="row">
+                    <div class="col" align="center">
+                        Информации о студентах не найдено
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="col-1"></div>
+
+        <div class="col-6">
+            <div class="row justify-content-center">
+                <div class="col">
+                    <div class="alert alert-info small-alert" role="alert">
+                        <h5 class="small-alert" align="center">
+                            Список учебных дисциплин
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            {% if group.speciality.disciplines %}
+                <div class="row">
+                    <div class="col">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Название дисциплины</th>
+                                    <th scope="col">Форма контроля</th>
+                                    <th scope="col">Теоретических часов</th>
+                                    <th scope="col">Практических часов</th>
+                                </tr>
+                            </thead>
+                                <tbody>
+                                    {% for discipline in group.speciality.disciplines %}
+                                        <tr>
+                                            <th scope="row">{{ forloop.counter }}</th>
+                                            <td>
+                                                <a class="alert-link" href="/discipline/{{ discipline.id }}/">{{ discipline.name }}</a>
+                                            </td>
+                                            <td>{{ discipline.control_form }}</td>
+                                            <td>{{ discipline.lecture_hours }}</td>
+                                            <td>{{ discipline.practice_hours }}</td>
+                                        </tr>
+                                   {% endfor %}
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% else %}
+                <div class="row">
+                    <div class="col" align="center">
+                        Информации об учебных дисциплинах не найдено
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
