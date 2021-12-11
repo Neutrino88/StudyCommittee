@@ -7,7 +7,7 @@ class University(models.Model):
     creation_year = models.DateTimeField('Год образования')
 
     class Meta:
-        db_table = 'university'
+        db_table = 'app_university'
         verbose_name = 'Университет'
         verbose_name_plural = 'Университеты'
 
@@ -17,7 +17,7 @@ class Faculty(models.Model):
     university = models.ForeignKey(University, verbose_name='Университет', on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'faculty'
+        db_table = 'app_faculty'
         verbose_name = 'Факультет'
         verbose_name_plural = 'Факультеты'
 
@@ -38,7 +38,7 @@ class Speciality(models.Model):
     faculty = models.ForeignKey(Faculty, verbose_name='Факультет', on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'speciality'
+        db_table = 'app_speciality'
         verbose_name = 'Специальность'
         verbose_name_plural = 'Специальности'
 
@@ -49,7 +49,7 @@ class StudyGroup(models.Model):
     speciality = models.ForeignKey(Speciality, verbose_name='Специальность', on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'study_group'
+        db_table = 'app_study_group'
         verbose_name = 'Учебная группа'
         verbose_name_plural = 'Учебные группы'
 
@@ -61,7 +61,7 @@ class PersonalInfo(models.Model):
     birthday = models.DateField('Дата рождения')
 
     class Meta:
-        db_table = 'personal_info'
+        db_table = 'app_personal_info'
         verbose_name = 'Личная информация'
         verbose_name_plural = 'Личная информация'
 
@@ -71,7 +71,7 @@ class Student(models.Model):
     group = models.ForeignKey(StudyGroup, verbose_name='Учебная группа', on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'student'
+        db_table = 'app_student'
         verbose_name = 'Студент'
         verbose_name_plural = 'Студенты'
 
@@ -82,7 +82,7 @@ class Lecturer(models.Model):
     degree = models.CharField('Степень', max_length=30)
 
     class Meta:
-        db_table = 'lecturer'
+        db_table = 'app_lecturer'
         verbose_name = 'Преподаватель'
         verbose_name_plural = 'Преподаватели'
 
@@ -104,7 +104,7 @@ class Discipline(models.Model):
     practice_hours = models.PositiveIntegerField('Практические часы')
 
     class Meta:
-        db_table = 'discipline'
+        db_table = 'app_discipline'
         verbose_name = 'Учебная дисциплина'
         verbose_name_plural = 'Учебные дисциплины'
 
@@ -115,7 +115,7 @@ class LecturerGroupDiscipline(models.Model):
     discipline = models.ForeignKey(Discipline, verbose_name='Дисциплина', on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'lecturer_group_discipline'
+        db_table = 'app_lecturer_group_discipline'
         unique_together = ('professor', 'group', 'discipline')
         verbose_name = 'Преподаватель-группа-дисциплина'
         verbose_name_plural = 'Преподаватель-группа-дисциплина'
@@ -126,7 +126,7 @@ class SpecialityDiscipline(models.Model):
     discipline = models.ForeignKey(Discipline, verbose_name='Дисциплина', on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'speciality_discipline'
+        db_table = 'app_speciality_discipline'
         unique_together = ('speciality', 'discipline')
         verbose_name = 'Специальность-дисциплина'
         verbose_name_plural = 'Специальность-дисциплина'
