@@ -13,4 +13,6 @@ urlpatterns = [
     path('speciality/<int:spec_id>/', views.speciality_page, name='speciality'),
     # ex: /group/4/
     path('group/<int:group_id>/', views.group_page, name='group'),
+    # ex: /discipline/5/
+    path('discipline/<int:disc_id>/', views.discipline_page, name='discipline'),
 ]
