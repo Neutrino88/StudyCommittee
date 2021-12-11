@@ -71,6 +71,13 @@ class Speciality(models.Model):
     def students(self):
         return Student.objects.filter(group__speciality_id=self.id)
 
+    def disciplines(self):
+        disciplines_id = [sd.discipline_id for sd in SpecialityDiscipline.objects.filter(speciality_id=self.id)]
+        return Discipline.objects.filter(id__in=disciplines_id)
+
+    def study_groups(self):
+        return StudyGroup.objects.filter(speciality_id=self.id)
+
     @property
     def readable_study_format(self):
         for s_f, readable in Speciality.STUDY_FORMAT_CHOICES:
@@ -90,6 +97,9 @@ class StudyGroup(models.Model):
 
     def __str__(self):
         return f"id {self.id}: {self.number} ({self.course_number} курс)"
+
+    def students(self):
+        return Student.objects.filter(group__speciality_id=self.id)
 
     class Meta:
         db_table = 'app_study_group'
