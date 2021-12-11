@@ -1,0 +1,17 @@
+{% extends 'app/base_template.html' %}
+
+{% block title %}
+    Учебный комитет
+{% endblock %}
+
+{% block body %}
+    {% if universities %}
+        <ul>
+        {% for university in universities %}
+            <li><a href="/university/{{ university.id }}/">{{ university.short_name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No universities are available.</p>
+    {% endif %}
+{% endblock %}
