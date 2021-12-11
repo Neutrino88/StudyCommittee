@@ -68,6 +68,9 @@ class Speciality(models.Model):
     def __str__(self):
         return f"id {self.id}: {self.name} ({self.readable_study_format})"
 
+    def students(self):
+        return Student.objects.filter(group__speciality_id=self.id)
+
     @property
     def readable_study_format(self):
         for s_f, readable in Speciality.STUDY_FORMAT_CHOICES:

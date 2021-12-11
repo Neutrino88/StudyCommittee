@@ -1,0 +1,51 @@
+{% extends 'app/base_template.html' %}
+
+{% block title %}
+    Учебный комитет
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-primary" role="alert">
+                <h2 align="center">{{ faculty.name }}</h2>
+                <h4 align="center">({{ faculty.university.short_name }})</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Название специальности</th>
+                        <th scope="col">Форма обучения</th>
+                        <th scope="col">Количество студентов</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for speciality in faculty.specialities %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>
+                                <a href="/speciality/{{ speciality.id }}/">{{ speciality.name }}</a>
+                            </td>
+                            <td>{{ speciality.readable_study_format }}</td>
+                            <td>
+                                {% with students_count=speciality.students|length %}
+                                    {% if students_count %}
+                                        {{ students_count }}
+                                    {% else %}
+                                        Нет студентов
+                                    {% endif %}
+                                {% endwith %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
