@@ -5,13 +5,39 @@
 {% endblock %}
 
 {% block body %}
-    {% if universities %}
-        <ul>
-        {% for university in universities %}
-            <li><a href="/university/{{ university.id }}/">{{ university.short_name }}</a></li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No universities are available.</p>
-    {% endif %}
+    <div class="row">
+        <h1 align="center">Сайт учебного комитета</h1>
+    </div>
+    <div class="row">
+        {% if universities %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Название университета</th>
+                        <th scope="col">Факультетов</th>
+                        <th scope="col">Специальностей</th>
+                        <th scope="col">Групп</th>
+                        <th scope="col">Студентов</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for university in universities %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>
+                                <a href="/university/{{ university.id }}/">{{ university.name }}</a>
+                            </td>
+                            <td>{{ university.faculties|length }}</td>
+                            <td>{{ university.specialities|length }}</td>
+                            <td>{{ university.study_groups|length }}</td>
+                            <td>{{ university.students|length }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No universities are available.</p>
+        {% endif %}
+    </div>
 {% endblock %}

@@ -9,6 +9,18 @@ class University(models.Model):
     def __str__(self):
         return f"id {self.id}: {self.short_name}"
 
+    def faculties(self):
+        return Faculty.objects.filter(university_id=self.id)
+
+    def specialities(self):
+        return Speciality.objects.filter(faculty__university_id=self.id)
+
+    def study_groups(self):
+        return StudyGroup.objects.filter(speciality__faculty__university_id=self.id)
+
+    def students(self):
+        return Student.objects.filter(group__speciality__faculty__university_id=self.id)
+
     class Meta:
         db_table = 'app_university'
         verbose_name = 'Университет'
