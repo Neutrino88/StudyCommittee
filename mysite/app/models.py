@@ -2,9 +2,12 @@ from django.db import models
 
 
 class University(models.Model):
-    name = models.CharField('Краткое название', max_length=200)
-    full_name = models.CharField('Полное название', max_length=200)
-    creation_year = models.DateTimeField('Год образования')
+    short_name = models.CharField('Краткое название', max_length=100)
+    name = models.CharField('Полное название', max_length=200)
+    creation_year = models.PositiveSmallIntegerField('Год образования')
+
+    def __str__(self):
+        return f"id {self.id}: {self.short_name}"
 
     class Meta:
         db_table = 'app_university'
@@ -13,8 +16,12 @@ class University(models.Model):
 
 
 class Faculty(models.Model):
-    name = models.CharField('Название', max_length=200)
+    short_name = models.CharField('Краткое название', max_length=100)
+    name = models.CharField('Полное название', max_length=200)
     university = models.ForeignKey(University, verbose_name='Университет', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"id {self.id}: {self.short_name}"
 
     class Meta:
         db_table = 'app_faculty'
@@ -37,6 +44,16 @@ class Speciality(models.Model):
     study_format = models.CharField('Формат обучения', max_length=2, choices=STUDY_FORMAT_CHOICES, default=FULL_TIME)
     faculty = models.ForeignKey(Faculty, verbose_name='Факультет', on_delete=models.CASCADE)
 
+    def __str__(self):
+        study_format = Speciality.get_readable_format(self.study_format)
+        return f"id {self.id}: {self.name} ({study_format})"
+
+    @staticmethod
+    def get_readable_format(study_format):
+        for s_f, readable in Speciality.STUDY_FORMAT_CHOICES:
+            if s_f == study_format:
+                return readable
+
     class Meta:
         db_table = 'app_speciality'
         verbose_name = 'Специальность'
@@ -47,6 +64,9 @@ class StudyGroup(models.Model):
     number = models.CharField('Номер группы', max_length=10)
     course_number = models.PositiveSmallIntegerField('Номер курса')
     speciality = models.ForeignKey(Speciality, verbose_name='Специальность', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"id {self.id}: {self.number} ({self.course_number} курс)"
 
     class Meta:
         db_table = 'app_study_group'
@@ -60,6 +80,9 @@ class PersonalInfo(models.Model):
     patronymic_name = models.CharField('Отчество', max_length=30)
     birthday = models.DateField('Дата рождения')
 
+    def __str__(self):
+        return f"id {self.id}: {self.last_name} {self.first_name} {self.patronymic_name} ({self.birthday})"
+
     class Meta:
         db_table = 'app_personal_info'
         verbose_name = 'Личная информация'
@@ -69,6 +92,9 @@ class PersonalInfo(models.Model):
 class Student(models.Model):
     info = models.OneToOneField(PersonalInfo, verbose_name='Личная информация', on_delete=models.CASCADE)
     group = models.ForeignKey(StudyGroup, verbose_name='Учебная группа', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"id {self.id}: {self.group} - {self.info}"
 
     class Meta:
         db_table = 'app_student'
@@ -80,6 +106,9 @@ class Lecturer(models.Model):
     info = models.OneToOneField(PersonalInfo, verbose_name='Личная информация', on_delete=models.CASCADE)
     faculty = models.ForeignKey(Faculty, verbose_name='Факультет', on_delete=models.CASCADE)
     degree = models.CharField('Степень', max_length=30)
+
+    def __str__(self):
+        return f"id {self.id}: {self.degree} {self.info}"
 
     class Meta:
         db_table = 'app_lecturer'
@@ -103,6 +132,9 @@ class Discipline(models.Model):
     lecture_hours = models.PositiveIntegerField('Теоритические часы')
     practice_hours = models.PositiveIntegerField('Практические часы')
 
+    def __str__(self):
+        return f"id {self.id}: {self.name} ({self.control_form}), {self.lecture_hours} л.ч., {self.practice_hours} п.ч."
+
     class Meta:
         db_table = 'app_discipline'
         verbose_name = 'Учебная дисциплина'
@@ -110,13 +142,16 @@ class Discipline(models.Model):
 
 
 class LecturerGroupDiscipline(models.Model):
-    professor = models.ForeignKey(Lecturer, verbose_name='Преподаватель', on_delete=models.CASCADE)
+    lecturer = models.ForeignKey(Lecturer, verbose_name='Преподаватель', on_delete=models.CASCADE)
     group = models.ForeignKey(StudyGroup, verbose_name='Учебная группа', on_delete=models.CASCADE)
     discipline = models.ForeignKey(Discipline, verbose_name='Дисциплина', on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"{self.lecturer_id} {self.group_id} {self.discipline_id}"
+
     class Meta:
         db_table = 'app_lecturer_group_discipline'
-        unique_together = ('professor', 'group', 'discipline')
+        unique_together = ('lecturer', 'group', 'discipline')
         verbose_name = 'Преподаватель-группа-дисциплина'
         verbose_name_plural = 'Преподаватель-группа-дисциплина'
 
@@ -124,6 +159,9 @@ class LecturerGroupDiscipline(models.Model):
 class SpecialityDiscipline(models.Model):
     speciality = models.ForeignKey(Speciality, verbose_name='Специальность', on_delete=models.CASCADE)
     discipline = models.ForeignKey(Discipline, verbose_name='Дисциплина', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.speciality_id} {self.discipline_id}"
 
     class Meta:
         db_table = 'app_speciality_discipline'
