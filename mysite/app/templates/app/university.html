@@ -1,10 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'app/base_template.html' %}
 
-</body>
-</html>
+{% block title %}
+    Учебный комитет
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-primary" role="alert">
+                <h2 align="center">{{ university.name }}</h2>
+            </div>
+        </div>
+    </div>
+
+    {% for faculty in university.faculties %}
+    <div class="row">
+        <div class="col">
+            <div class="row justify-content-center">
+                <div class="col-6">
+                    <div class="alert alert-info" role="alert">
+                        <h6 align="center">{{ faculty.name }}</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Название специальности</th>
+                                <th scope="col">Форма обучения</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for speciality in faculty.specialities %}
+                                <tr>
+                                    <th scope="row">{{ forloop.counter }}</th>
+                                    <td>
+                                        <a href="/speciality/{{ speciality.id }}/">{{ speciality.name }}</a>
+                                    </td>
+                                    <td>{{ speciality.readable_study_format }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}

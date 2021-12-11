@@ -35,6 +35,15 @@ class Faculty(models.Model):
     def __str__(self):
         return f"id {self.id}: {self.short_name}"
 
+    def specialities(self):
+        return Speciality.objects.filter(faculty_id=self.id)
+
+    def study_groups(self):
+        return StudyGroup.objects.filter(speciality__faculty_id=self.id)
+
+    def students(self):
+        return Student.objects.filter(group__speciality__faculty_id=self.id)
+
     class Meta:
         db_table = 'app_faculty'
         verbose_name = 'Факультет'
@@ -57,13 +66,12 @@ class Speciality(models.Model):
     faculty = models.ForeignKey(Faculty, verbose_name='Факультет', on_delete=models.CASCADE)
 
     def __str__(self):
-        study_format = Speciality.get_readable_format(self.study_format)
-        return f"id {self.id}: {self.name} ({study_format})"
+        return f"id {self.id}: {self.name} ({self.readable_study_format})"
 
-    @staticmethod
-    def get_readable_format(study_format):
+    @property
+    def readable_study_format(self):
         for s_f, readable in Speciality.STUDY_FORMAT_CHOICES:
-            if s_f == study_format:
+            if s_f == self.study_format:
                 return readable
 
     class Meta:
