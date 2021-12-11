@@ -16,7 +16,7 @@
 
     <div class="row justify-content-center">
         <div class="col-4">
-            <div class="alert alert-info small-alert" role="alert">
+            <div class="alert alert-primary small-alert" role="alert">
                 <h5 class="small-alert" align="center">Основная информация</h5>
             </div>
             <table class="table table-bordered">
@@ -38,7 +38,7 @@
                 </tbody>
             </table>
 
-            <div class="alert alert-info small-alert" role="alert">
+            <div class="alert alert-primary small-alert" role="alert">
                 <h5 class="small-alert" align="center">Список группы</h5>
             </div>
             {% if group.students  %}
@@ -74,7 +74,7 @@
         <div class="col-6">
             <div class="row justify-content-center">
                 <div class="col">
-                    <div class="alert alert-info small-alert" role="alert">
+                    <div class="alert alert-primary small-alert" role="alert">
                         <h5 class="small-alert" align="center">
                             Список учебных дисциплин
                         </h5>
@@ -101,7 +101,7 @@
                                             <td>
                                                 <a class="alert-link" href="/discipline/{{ discipline.id }}/">{{ discipline.name }}</a>
                                             </td>
-                                            <td>{{ discipline.control_form }}</td>
+                                            <td>{{ discipline.readable_control_form }}</td>
                                             <td>{{ discipline.lecture_hours }}</td>
                                             <td>{{ discipline.practice_hours }}</td>
                                         </tr>

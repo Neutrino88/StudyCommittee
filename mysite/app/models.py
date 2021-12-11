@@ -172,6 +172,12 @@ class Discipline(models.Model):
     def __str__(self):
         return f"id {self.id}: {self.name} ({self.control_form}), {self.lecture_hours} л.ч., {self.practice_hours} п.ч."
 
+    @property
+    def readable_control_form(self):
+        for s_f, readable in Discipline.CONTROL_FORM_CHOICES:
+            if s_f == self.control_form:
+                return readable
+
     class Meta:
         db_table = 'app_discipline'
         verbose_name = 'Учебная дисциплина'
