@@ -178,6 +178,9 @@ class Discipline(models.Model):
     def __str__(self):
         return f"id {self.id}: {self.name} ({self.control_form}), {self.lecture_hours} л.ч., {self.practice_hours} п.ч."
 
+    def specialities(self):
+        return SpecialityDiscipline.objects.filter(discipline_id=self.id)
+
     def groups_lecturers(self):
         return LecturerGroupDiscipline.objects.filter(discipline_id=self.id)
 
