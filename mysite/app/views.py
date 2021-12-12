@@ -1,7 +1,7 @@
 from django.http import Http404
 from django.shortcuts import render
 
-from .models import University, Faculty, Speciality, StudyGroup, Discipline
+from .models import University, Faculty, Speciality, StudyGroup, Discipline, Lecturer
 
 
 def index(request):
@@ -53,3 +53,12 @@ def discipline_page(request, disc_id):
         raise Http404("Discipline does not exist")
 
     return render(request, 'app/discipline.html', {'discipline': discipline})
+
+
+def lecturer_page(request, lect_id):
+    try:
+        lecturer = Lecturer.objects.get(pk=lect_id)
+    except Lecturer.DoesNotExist:
+        raise Http404("Discipline does not exist")
+
+    return render(request, 'app/lecturer.html', {'lecturer': lecturer})

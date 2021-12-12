@@ -116,6 +116,9 @@ class PersonalInfo(models.Model):
     def __str__(self):
         return f"id {self.id}: {self.full_name} ({self.birthday})"
 
+    def readable_birthday(self):
+        return self.birthday.strftime('%d %B %Y')
+
     @property
     def full_name(self):
         return f"{self.last_name} {self.first_name} {self.patronymic_name}"
@@ -146,6 +149,9 @@ class Lecturer(models.Model):
 
     def __str__(self):
         return f"id {self.id}: {self.degree} {self.info}"
+
+    def groups_disciplines(self):
+        return LecturerGroupDiscipline.objects.filter(lecturer_id=self.id)
 
     class Meta:
         db_table = 'app_lecturer'

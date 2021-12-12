@@ -1,0 +1,100 @@
+{% extends 'app/base_template.html' %}
+
+{% block title %}
+    Учебный комитет
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-primary" role="alert">
+                <h2 align="center">{{ lecturer.info.full_name }}</h2>
+                <h4 align="center">{{ lecturer.faculty.university.short_name }}, преподаватель</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <div class="alert alert-primary small-alert" role="alert">
+                <h5 align="center">
+                    Основная информация
+                </h5>
+            </div>
+
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th scope="row">Степерь:</th>
+                        <td>{{ lecturer.degree }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">ФИО:</th>
+                        <td>{{ lecturer.info.full_name }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">День рождения:</th>
+                        <td>{{ lecturer.info.readable_birthday }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Факультет:</th>
+                        <td>
+                            <a class="alert-link" href="/faculty/{{ lecturer.faculty.id }}/">
+                                {{ lecturer.faculty.short_name }}
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-1"></div>
+
+        <div class="col-6">
+            <div class="alert alert-primary small-alert" role="alert">
+                <h5 align="center">
+                    Преподает у следующих групп
+                </h5>
+            </div>
+
+            {% if lecturer.groups_disciplines %}
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Номер группы</th>
+                            <th scope="col">Специализация</th>
+                            <th scope="col">Предмет</th>
+                        </tr>
+                    </thead>
+                        <tbody>
+                            {% for group_discipline in lecturer.groups_disciplines %}
+                                <tr>
+                                    <th scope="row">{{ forloop.counter }}</th>
+                                    <td>
+                                        <a class="alert-link" href="/group/{{ group_discipline.group.id }}/">
+                                            {{ group_discipline.group.number }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a class="alert-link" href="/speciality/{{ group_discipline.group.speciality.id }}/">
+                                            {{ group_discipline.group.speciality.name }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a class="alert-link" href="/discipline/{{ group_discipline.discipline.id }}/">
+                                           {{ group_discipline.discipline.name }}
+                                        </a>
+                                    </td>
+                                </tr>
+                           {% endfor %}
+                        </tbody>
+                </table>
+            {% else %}
+                <div align="center">
+                    Информации об учебных группах не найдено
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

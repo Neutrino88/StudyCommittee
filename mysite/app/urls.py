@@ -15,4 +15,6 @@ urlpatterns = [
     path('group/<int:group_id>/', views.group_page, name='group'),
     # ex: /discipline/5/
     path('discipline/<int:disc_id>/', views.discipline_page, name='discipline'),
+    # ex: /lecturer/6/
+    path('lecturer/<int:lect_id>/', views.lecturer_page, name='lecturer'),
 ]

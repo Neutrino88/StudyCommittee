@@ -53,9 +53,7 @@
                         {% for student in group.students %}
                             <tr>
                                 <th scope="row">{{ forloop.counter }}</th>
-                                <td>
-                                    <a class="alert-link" href="/student/{{ student.id }}/">{{ student.info.full_name }}</a>
-                                </td>
+                                <td>{{ student.info.full_name }}</td>
                             </tr>
                        {% endfor %}
                     </tbody>
