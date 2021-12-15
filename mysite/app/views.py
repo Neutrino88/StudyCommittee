@@ -1,5 +1,6 @@
 from django.http import Http404
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required, permission_required
 
 from .models import University, Faculty, Speciality, StudyGroup, Discipline, Lecturer
 
@@ -37,6 +38,7 @@ def speciality_page(request, spec_id):
     return render(request, 'app/speciality.html', {'speciality': speciality})
 
 
+@permission_required('study_group.can_view_group_page')
 def group_page(request, group_id):
     try:
         group = StudyGroup.objects.get(pk=group_id)
@@ -46,6 +48,7 @@ def group_page(request, group_id):
     return render(request, 'app/group.html', {'group': group})
 
 
+@permission_required('discipline.can_view_discipline_page')
 def discipline_page(request, disc_id):
     try:
         discipline = Discipline.objects.get(pk=disc_id)
@@ -55,6 +58,7 @@ def discipline_page(request, disc_id):
     return render(request, 'app/discipline.html', {'discipline': discipline})
 
 
+@permission_required('lecturer.can_view_lecturer_page')
 def lecturer_page(request, lect_id):
     try:
         lecturer = Lecturer.objects.get(pk=lect_id)

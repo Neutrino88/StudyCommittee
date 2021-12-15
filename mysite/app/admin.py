@@ -2,6 +2,9 @@ from django.contrib import admin
 from app import models
 
 
+admin.site.site_header = 'Панель администратора Учебного комитета'
+admin.site.site_title = 'Учебный комитет'
+
 admin.site.register(models.Lecturer)
 admin.site.register(models.Discipline)
 admin.site.register(models.StudyGroup)
