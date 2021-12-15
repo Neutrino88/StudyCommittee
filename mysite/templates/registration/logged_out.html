@@ -1,0 +1,10 @@
+{% extends 'base_template.html' %}
+
+{% block body %}
+    <div class="row justify-content-center" style="margin-top: 50px">
+        <div class="col-4">
+            <p>Вы успешно вышли из системы.</p>
+            <a href="{% url 'login'%}">Нажмите сюда, чтобы авторизоваться</a>
+        </div>
+    </div>
+{% endblock %}

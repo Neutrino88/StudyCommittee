@@ -1,0 +1,44 @@
+{% extends 'base_template.html' %}
+
+{% block body %}
+    <div class="row justify-content-center" style="margin-top: 50px">
+        <div class="col-4">
+            {% if form.errors %}
+                <div class="alert alert-danger" role="alert">
+                    Логин и пароль не соответствуют. Попробуйте еще раз!
+                </div>
+            {% endif %}
+
+            {% if next %}
+                {% if user.is_authenticated %}
+                    <div class="alert alert-warning" role="alert">
+                        Только предcтавители учебного комитета могут просматривать эту страницу. Пожалуйста, авторизуйтесь в соответствующем аккаунте.
+                    </div>
+                {% else %}
+                    <div class="alert alert-warning" role="alert">
+                        Только преподаватели и предcтавители учебного комитета могут просматривать эту страницу. Пожалуйста, авторизуйтесь в соответствующем аккаунте.
+                    </div>
+                {% endif %}
+            {% endif %}
+
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col">Имя пользователя</div>
+                    <div class="col">{{ form.username }}</div>
+                </div>
+                <div class="row">
+                    <div class="col">Пароль</div>
+                    <div class="col">{{ form.password }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <button type="submit" class="btn btn-dark" value="login">Войти</button>
+                    </div>
+                </div>
+                <input type="hidden" name="next" value="{{ next }}" />
+            </form>
+        </div>
+    </div>
+{% endblock %}
