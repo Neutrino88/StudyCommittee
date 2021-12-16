@@ -96,7 +96,7 @@ class StudyGroup(models.Model):
     speciality = models.ForeignKey(Speciality, verbose_name='Специальность', on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"id {self.id}: {self.number} ({self.course_number} курс)"
+        return f"{self.number} ({self.course_number} курс)"
 
     def students(self):
         return Student.objects.filter(group__speciality_id=self.id)
@@ -118,7 +118,7 @@ class PersonalInfo(models.Model):
     birthday = models.DateField('Дата рождения')
 
     def __str__(self):
-        return f"id {self.id}: {self.full_name} ({self.birthday})"
+        return f"{self.full_name}"
 
     def readable_birthday(self):
         return self.birthday.strftime('%d %B %Y')
@@ -223,7 +223,7 @@ class SpecialityDiscipline(models.Model):
     discipline = models.ForeignKey(Discipline, verbose_name='Дисциплина', on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.speciality_id} {self.discipline_id}"
+        return f"{self.speciality}, {self.discipline}"
 
     class Meta:
         db_table = 'app_speciality_discipline'
