@@ -4,6 +4,21 @@
     Учебный комитет
 {% endblock %}
 
+{% block navbar %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page"><a href="/">Учебный комитет</a></li>
+            <li class="breadcrumb-item active" aria-current="page">
+                <a href="/university/{{ group.speciality.faculty.university.id }}">{{ group.speciality.faculty.university.short_name }}</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                <a href="/speciality/{{ group.speciality.id }}">{{ group.speciality.name }}</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">{{ group.number }}</li>
+        </ol>
+    </nav>
+{% endblock %}
+
 {% block body %}
     <div class="row">
         <div class="col">

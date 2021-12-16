@@ -4,6 +4,16 @@
     Учебный комитет
 {% endblock %}
 
+{% block navbar %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page"><a href="/">Учебный комитет</a></li>
+
+            <li class="breadcrumb-item active" aria-current="page">{{ discipline.name }}</li>
+        </ol>
+    </nav>
+{% endblock %}
+
 {% block body %}
     <div class="row">
         <div class="col">
