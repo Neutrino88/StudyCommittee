@@ -20,6 +20,20 @@
         <nav class="navbar navbar-light fixed-top" style="background-color: #EEE8AA">
             <div class="container-fluid">
                 {% block navbar %}{% endblock %}
+
+                <div align="right">
+                    {% if user.is_authenticated %}
+                        Добрый день, {{ user.first_name }}
+
+                        <span style="margin-left: 20px">
+                            <a href="/accounts/logout/">Выйти</a>
+                        </span>
+                    {% else %}
+                        <span style="margin-left: 20px">
+                            <a href="/accounts/login/">Войти</a>
+                        </span>
+                    {% endif %}
+                </div>
             </div>
         </nav>
 
