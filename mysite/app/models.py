@@ -101,6 +101,9 @@ class StudyGroup(models.Model):
     def students(self):
         return Student.objects.filter(group__speciality_id=self.id)
 
+    def lecturer_discipline(self):
+        return LecturerGroupDiscipline.objects.filter(group_id=self.id)
+
     class Meta:
         db_table = 'app_study_group'
         verbose_name = 'Учебная группа'

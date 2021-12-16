@@ -90,6 +90,7 @@
                                     <th scope="col">Форма контроля</th>
                                     <th scope="col">Теоретических часов</th>
                                     <th scope="col">Практических часов</th>
+                                    <th scope="col">Преподаватель</th>
                                 </tr>
                             </thead>
                                 <tbody>
@@ -102,6 +103,15 @@
                                             <td>{{ discipline.readable_control_form }}</td>
                                             <td>{{ discipline.lecture_hours }}</td>
                                             <td>{{ discipline.practice_hours }}</td>
+                                            <td>
+                                                {% for lect_disc in group.lecturer_discipline %}
+                                                    {% if lect_disc.discipline.id == discipline.id %}
+                                                        <a href="/lecturer/{{ lect_disc.lecturer.id }}">
+                                                            {{ lect_disc.lecturer.info.full_name }}
+                                                        </a>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
                                         </tr>
                                    {% endfor %}
                                 </tbody>
