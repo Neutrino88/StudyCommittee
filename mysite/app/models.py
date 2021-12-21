@@ -101,7 +101,7 @@ class StudyGroup(models.Model):
         return f"{self.number} ({self.course_number} курс)"
 
     def students(self):
-        return Student.objects.filter(group__speciality_id=self.id)
+        return Student.objects.filter(group_id=self.id)
 
     def lecturer_discipline(self):
         return LecturerGroupDiscipline.objects.filter(group_id=self.id)
