@@ -2,9 +2,9 @@ from django.db import models
 
 
 class University(models.Model):
-    short_name = models.CharField('Краткое название', max_length=100)
-    name = models.CharField('Полное название', max_length=200)
-    creation_year = models.PositiveSmallIntegerField('Год образования')
+    short_name = models.CharField('Краткое название', max_length=100, null=False)
+    name = models.CharField('Полное название', max_length=200, unique=True, null=False)
+    creation_year = models.PositiveSmallIntegerField('Год образования', null=False)
 
     def __str__(self):
         return f"id {self.id}: {self.short_name}"
@@ -28,9 +28,9 @@ class University(models.Model):
 
 
 class Faculty(models.Model):
-    short_name = models.CharField('Краткое название', max_length=100)
-    name = models.CharField('Полное название', max_length=200)
-    university = models.ForeignKey(University, verbose_name='Университет', on_delete=models.CASCADE)
+    short_name = models.CharField('Краткое название', max_length=100, null=False)
+    name = models.CharField('Полное название', max_length=200, null=False)
+    university = models.ForeignKey(University, verbose_name='Университет', on_delete=models.CASCADE, null=False)
 
     def __str__(self):
         return f"id {self.id}: {self.short_name}"
@@ -48,6 +48,7 @@ class Faculty(models.Model):
         db_table = 'app_faculty'
         verbose_name = 'Факультет'
         verbose_name_plural = 'Факультеты'
+        unique_together = ('name', 'university')
 
 
 class Speciality(models.Model):
@@ -61,9 +62,9 @@ class Speciality(models.Model):
         (PART_TIME, 'Очно-заочная'),
     )
 
-    name = models.CharField('Название', max_length=200)
-    study_format = models.CharField('Формат обучения', max_length=2, choices=STUDY_FORMAT_CHOICES, default=FULL_TIME)
-    faculty = models.ForeignKey(Faculty, verbose_name='Факультет', on_delete=models.CASCADE)
+    name = models.CharField('Название', max_length=200, null=False)
+    study_format = models.CharField('Формат обучения', max_length=2, choices=STUDY_FORMAT_CHOICES, default=FULL_TIME, null=False)
+    faculty = models.ForeignKey(Faculty, verbose_name='Факультет', on_delete=models.CASCADE, null=False)
 
     def __str__(self):
         return f"id {self.id}: {self.name} ({self.readable_study_format})"
@@ -88,12 +89,13 @@ class Speciality(models.Model):
         db_table = 'app_speciality'
         verbose_name = 'Специальность'
         verbose_name_plural = 'Специальности'
+        unique_together = ('name', 'faculty')
 
 
 class StudyGroup(models.Model):
-    number = models.CharField('Номер группы', max_length=10)
-    course_number = models.PositiveSmallIntegerField('Номер курса')
-    speciality = models.ForeignKey(Speciality, verbose_name='Специальность', on_delete=models.CASCADE)
+    course_number = models.PositiveSmallIntegerField('Номер курса', null=False)
+    number = models.CharField('Номер группы', max_length=10, unique=True, null=False)
+    speciality = models.ForeignKey(Speciality, verbose_name='Специальность', on_delete=models.CASCADE, null=False)
 
     def __str__(self):
         return f"{self.number} ({self.course_number} курс)"
@@ -112,10 +114,10 @@ class StudyGroup(models.Model):
 
 
 class PersonalInfo(models.Model):
-    first_name = models.CharField('Имя', max_length=30)
-    last_name = models.CharField('Фамилия', max_length=30)
+    first_name = models.CharField('Имя', max_length=30, null=False)
+    last_name = models.CharField('Фамилия', max_length=30, null=False)
     patronymic_name = models.CharField('Отчество', max_length=30)
-    birthday = models.DateField('Дата рождения')
+    birthday = models.DateField('Дата рождения', null=False)
 
     def __str__(self):
         return f"{self.full_name}"
@@ -134,8 +136,8 @@ class PersonalInfo(models.Model):
 
 
 class Student(models.Model):
-    info = models.OneToOneField(PersonalInfo, verbose_name='Личная информация', on_delete=models.CASCADE)
-    group = models.ForeignKey(StudyGroup, verbose_name='Учебная группа', on_delete=models.CASCADE)
+    info = models.OneToOneField(PersonalInfo, verbose_name='Личная информация', on_delete=models.CASCADE, unique=True, null=False)
+    group = models.ForeignKey(StudyGroup, verbose_name='Учебная группа', on_delete=models.CASCADE, null=False)
 
     def __str__(self):
         return f"id {self.id}: {self.group} - {self.info}"
@@ -147,9 +149,9 @@ class Student(models.Model):
 
 
 class Lecturer(models.Model):
-    info = models.OneToOneField(PersonalInfo, verbose_name='Личная информация', on_delete=models.CASCADE)
-    faculty = models.ForeignKey(Faculty, verbose_name='Факультет', on_delete=models.CASCADE)
-    degree = models.CharField('Степень', max_length=30)
+    info = models.OneToOneField(PersonalInfo, verbose_name='Личная информация', on_delete=models.CASCADE, unique=True, null=False)
+    faculty = models.ForeignKey(Faculty, verbose_name='Факультет', on_delete=models.CASCADE, null=False)
+    degree = models.CharField('Степень', max_length=30, null=False)
 
     def __str__(self):
         return f"id {self.id}: {self.degree} {self.info}"
@@ -175,8 +177,8 @@ class Discipline(models.Model):
         (TEST, 'Тест'),
     )
 
-    name = models.CharField('Название дисциплины', max_length=200)
-    control_form = models.CharField('Форма контроля', max_length=2, choices=CONTROL_FORM_CHOICES, default=CREDIT)
+    name = models.CharField('Название дисциплины', max_length=200, null=False)
+    control_form = models.CharField('Форма контроля', max_length=2, choices=CONTROL_FORM_CHOICES, default=CREDIT, null=False)
     lecture_hours = models.PositiveIntegerField('Теоритические часы')
     practice_hours = models.PositiveIntegerField('Практические часы')
 
@@ -203,9 +205,9 @@ class Discipline(models.Model):
 
 
 class LecturerGroupDiscipline(models.Model):
-    lecturer = models.ForeignKey(Lecturer, verbose_name='Преподаватель', on_delete=models.CASCADE)
-    group = models.ForeignKey(StudyGroup, verbose_name='Учебная группа', on_delete=models.CASCADE)
-    discipline = models.ForeignKey(Discipline, verbose_name='Дисциплина', on_delete=models.CASCADE)
+    lecturer = models.ForeignKey(Lecturer, verbose_name='Преподаватель', on_delete=models.CASCADE, null=False)
+    group = models.ForeignKey(StudyGroup, verbose_name='Учебная группа', on_delete=models.CASCADE, null=False)
+    discipline = models.ForeignKey(Discipline, verbose_name='Дисциплина', on_delete=models.CASCADE, null=False)
 
     def __str__(self):
         names = f"{self.lecturer.info.full_name}, {self.group.number}, {self.discipline.name}"
@@ -219,8 +221,8 @@ class LecturerGroupDiscipline(models.Model):
 
 
 class SpecialityDiscipline(models.Model):
-    speciality = models.ForeignKey(Speciality, verbose_name='Специальность', on_delete=models.CASCADE)
-    discipline = models.ForeignKey(Discipline, verbose_name='Дисциплина', on_delete=models.CASCADE)
+    speciality = models.ForeignKey(Speciality, verbose_name='Специальность', on_delete=models.CASCADE, null=False)
+    discipline = models.ForeignKey(Discipline, verbose_name='Дисциплина', on_delete=models.CASCADE, null=False)
 
     def __str__(self):
         return f"{self.speciality}, {self.discipline}"
