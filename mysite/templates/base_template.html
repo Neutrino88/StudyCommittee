@@ -25,9 +25,11 @@
                     {% if user.is_authenticated %}
                         Добрый день, {{ user.first_name }}
 
-                        <span style="margin-left: 20px">
-                            <a href="/admin/">Панель администратора</a>
-                        </span>
+                        {% if user.is_staff %}
+                            <span style="margin-left: 20px">
+                                <a href="/admin/">Панель администратора</a>
+                            </span>
+                        {% endif %}
 
                         <span style="margin-left: 20px">
                             <a href="/accounts/logout/">Выйти</a>

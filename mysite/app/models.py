@@ -110,7 +110,6 @@ class StudyGroup(models.Model):
         db_table = 'app_study_group'
         verbose_name = 'Учебная группа'
         verbose_name_plural = 'Учебные группы'
-        permissions = (("can_view_group_page", "View study group page"),)
 
 
 class PersonalInfo(models.Model):
@@ -163,7 +162,6 @@ class Lecturer(models.Model):
         db_table = 'app_lecturer'
         verbose_name = 'Преподаватель'
         verbose_name_plural = 'Преподаватели'
-        permissions = (("can_view_lecturer_page", "View lecturer page"),)
 
 
 class Discipline(models.Model):
@@ -201,7 +199,6 @@ class Discipline(models.Model):
         db_table = 'app_discipline'
         verbose_name = 'Учебная дисциплина'
         verbose_name_plural = 'Учебные дисциплины'
-        permissions = (("can_view_discipline_page", "View discipline page"),)
 
 
 class LecturerGroupDiscipline(models.Model):
